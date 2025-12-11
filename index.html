@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ランダム抽選</title>
+
+  <link rel="manifest" href="manifest.webmanifest" />
+
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    button {
+      font-size: 24px;
+      padding: 15px 30px;
+    }
+    #result {
+      margin-top: 30px;
+      font-size: 32px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>ランダム抽選</h1>
+
+  <button onclick="pick()">抽選する</button>
+
+  <div id="result"></div>
+
+  <script>
+    function pick() {
+      const candidates = ["A", "B", "C", "D", "E"];
+      const result = candidates[Math.floor(Math.random() * candidates.length)];
+      document.getElementById("result").textContent = result;
+    }
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js");
+    }
+  </script>
+</body>
+</html>
