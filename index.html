@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ランダム抽選</title>
+  <title>BINGO</title>
 
   <link rel="manifest" href="manifest.webmanifest" />
 
@@ -25,7 +25,7 @@
   </style>
 </head>
 <body>
-  <h1>ランダム抽選</h1>
+  <h1>BINGO</h1>
 
   <button onclick="pick()">抽選する</button>
 
@@ -33,7 +33,7 @@
 
   <script>
     function pick() {
-      const candidates = ["A", "B", "C", "D", "E"];
+      const candidates = ["1", "2", "3", "4", "5"];
       const result = candidates[Math.floor(Math.random() * candidates.length)];
       document.getElementById("result").textContent = result;
     }
