@@ -3,44 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BINGO!!</title>
+  <title>BINGO</title>
 
   <link rel="manifest" href="manifest.webmanifest" />
 
   <style>
     body {
       font-family: sans-serif;
-      padding: 20px;
       text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 48px;
+      margin-bottom: 30px;
     }
     button {
-      font-size: 24px;
-      padding: 15px 30px;
+      font-size: 28px;
+      padding: 15px 40px;
     }
     #result {
-      margin-top: 30px;
-      font-size: 32px;
+      margin-top: 40px;
+      font-size: 72px;
       font-weight: bold;
+    }
+    #remain {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #666;
     }
   </style>
 </head>
 <body>
+
   <h1>BINGO</h1>
 
-  <button onclick="pick()">抽選する</button>
+  <button onclick="draw()">抽選する</button>
 
-  <div id="result"></div>
+  <div id="result">-</div>
+  <div id="remain"></div>
 
   <script>
-    function pick() {
-      const candidates = ["1", "2", "3", "4", "5"];
-      const result = candidates[Math.floor(Math.random() * candidates.length)];
-      document.getElementById("result").textContent = result;
+    // 1〜75 を配列に入れる
+    let numbers = Array.from({ length: 75 }, (_, i) => i + 1);
+
+    function draw() {
+      if (numbers.length === 0) {
+        document.getElementById("result").textContent = "終了";
+        return;
+      }
+
+      // ランダムに1つ取り出す
+      const index = Math.floor(Math.random() * numbers.length);
+      const picked = numbers.splice(index, 1)[0];
+
+      document.getElementById("result").textContent = picked;
+      document.getElementById("remain").textContent =
+        `残り ${numbers.length} 個`;
     }
 
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("sw.js");
     }
   </script>
+
 </body>
 </html>
