@@ -1,6 +1,9 @@
-self.addEventListener("install", e => {
-  e.waitUntil(
-    caches.open("v2").then(cache => {
+const CACHE_NAME = "v2";
+
+self.addEventListener("install", event => {
+  self.skipWaiting(); // ← これが超重要
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => {
       return cache.addAll([
         "./",
         "index.html",
@@ -10,8 +13,21 @@ self.addEventListener("install", e => {
   );
 });
 
-self.addEventListener("fetch", e => {
-  e.respondWith(
-    caches.match(e.request).then(res => res || fetch(e.request))
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys
+          .filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
+      )
+    )
+  );
+  self.clients.claim(); // ← これも重要
+});
+
+self.addEventListener("fetch", event => {
+  event.respondWith(
+    caches.match(event.request).then(res => res || fetch(event.request))
   );
 });
