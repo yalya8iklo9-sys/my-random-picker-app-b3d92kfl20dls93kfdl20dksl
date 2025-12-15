@@ -15,21 +15,38 @@
     }
     h1 {
       font-size: 48px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
     button {
       font-size: 28px;
       padding: 15px 40px;
     }
     #result {
-      margin-top: 40px;
+      margin-top: 30px;
       font-size: 72px;
       font-weight: bold;
     }
     #remain {
-      margin-top: 20px;
-      font-size: 18px;
+      margin-top: 10px;
       color: #666;
+    }
+    #history {
+      margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .ball {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
     }
   </style>
 </head>
@@ -42,9 +59,12 @@
   <div id="result">-</div>
   <div id="remain"></div>
 
+  <div id="history"></div>
+
   <script>
-    // 1〜75 を配列に入れる
+    // 1〜75
     let numbers = Array.from({ length: 75 }, (_, i) => i + 1);
+    let history = [];
 
     function draw() {
       if (numbers.length === 0) {
@@ -52,13 +72,28 @@
         return;
       }
 
-      // ランダムに1つ取り出す
       const index = Math.floor(Math.random() * numbers.length);
       const picked = numbers.splice(index, 1)[0];
+
+      history.unshift(picked);
 
       document.getElementById("result").textContent = picked;
       document.getElementById("remain").textContent =
         `残り ${numbers.length} 個`;
+
+      renderHistory();
+    }
+
+    function renderHistory() {
+      const historyDiv = document.getElementById("history");
+      historyDiv.innerHTML = "";
+
+      history.forEach(num => {
+        const div = document.createElement("div");
+        div.className = "ball";
+        div.textContent = num;
+        historyDiv.appendChild(div);
+      });
     }
 
     if ("serviceWorker" in navigator) {
