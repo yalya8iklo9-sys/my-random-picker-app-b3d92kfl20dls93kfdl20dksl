@@ -25,6 +25,7 @@
       margin-top: 30px;
       font-size: 130px;
       font-weight: bold;
+      line-height: 1;
     }
     #remain {
       margin-top: 10px;
@@ -62,19 +63,32 @@
   <div id="history"></div>
 
   <script>
-    // 1〜75
+    // ===== 初期化 =====
+
+    // 1〜75 を生成
     let numbers = Array.from({ length: 75 }, (_, i) => i + 1);
     let history = [];
 
+    // Fisher–Yates シャッフル（完全に平等）
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    // 最初に一度だけシャッフル
+    shuffle(numbers);
+
+    // ===== 抽選処理 =====
     function draw() {
       if (numbers.length === 0) {
         document.getElementById("result").textContent = "終了";
         return;
       }
 
-      const index = Math.floor(Math.random() * numbers.length);
-      const picked = numbers.splice(index, 1)[0];
-
+      // 先頭から1つ取り出す
+      const picked = numbers.shift();
       history.unshift(picked);
 
       document.getElementById("result").textContent = picked;
@@ -84,6 +98,7 @@
       renderHistory();
     }
 
+    // ===== 履歴表示 =====
     function renderHistory() {
       const historyDiv = document.getElementById("history");
       historyDiv.innerHTML = "";
@@ -96,6 +111,7 @@
       });
     }
 
+    // ===== PWA =====
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("sw.js");
     }
