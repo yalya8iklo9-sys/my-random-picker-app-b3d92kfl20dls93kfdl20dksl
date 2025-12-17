@@ -1,4 +1,4 @@
-const CACHE_NAME = "v100";
+const CACHE_NAME = "v101";
 
 self.addEventListener("install", event => {
   self.skipWaiting(); // ← これが超重要
